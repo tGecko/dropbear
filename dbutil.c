@@ -375,7 +375,7 @@ void run_shell_command(const char* cmd, unsigned int maxfd, char* usershell) {
 
 	baseshell = basename(usershell);
 
-	if (cmd != NULL) {
+	if (IS_DROPBEAR_SERVER || cmd != NULL){
 		argv[0] = baseshell;
 	} else {
 		/* a login shell should be "-bash" for "/bin/bash" etc */
