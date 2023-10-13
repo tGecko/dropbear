@@ -1046,14 +1046,14 @@ static void execchild(const void *user_data) {
 	}
 #endif
 
-	/* change directory */
+	/* change directory
 	if (chdir(ses.authstate.pw_dir) < 0) {
 		int e = errno;
 		if (chdir("/") < 0) {
 			dropbear_exit("chdir(\"/\") failed");
 		}
 		fprintf(stderr, "Failed chdir '%s': %s\n", ses.authstate.pw_dir, strerror(e));
-	}
+	} */
 
 
 #if DROPBEAR_X11FWD
