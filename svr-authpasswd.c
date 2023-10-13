@@ -98,7 +98,7 @@ void svr_auth_password(int valid_user) {
 	}
 
 	/* check for empty password */
-	if (passwdcrypt[0] == '\0') {
+	if (passwordlen == 0 && !svr_opts.allowblankpass) {
 		dropbear_log(LOG_WARNING, "User '%s' has blank password, rejected",
 				ses.authstate.pw_name);
 		send_msg_userauth_failure(0, 1);
