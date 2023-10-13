@@ -1,3 +1,24 @@
+## Modified to fit requirements for the miyoo mini.
+
+### Changes made:
+
+* every user logs in as root
+* shell is started as interactive shell to avoid loading of /etc/profile
+* for blank password, check the actual submitted password length instead of checking the password hash length
+* don't chdir into home directory
+* change LD_LIBRARY_PATH
+
+### To build:
+
+within union-miyoomini-toolchain:
+```
+git clone https://github.com/tGecko/dropbear.git
+cd dropbear
+./build.sh
+```
+
+## --- original README below ---
+
 This is Dropbear, a smallish SSH server and client.
 https://matt.ucc.asn.au/dropbear/dropbear.html
 
