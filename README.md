@@ -1,12 +1,13 @@
 ## Modified to fit requirements for the miyoo mini.
 
 ### Changes made:
-
+* based on [dropbear 2022.83](https://github.com/mkj/dropbear/tree/DROPBEAR_2022.83)
 * every user logs in as root
 * shell is started as interactive shell to avoid loading of /etc/profile
 * for blank password, check the actual submitted password length instead of checking the password hash length
 * don't chdir into home directory
 * change LD_LIBRARY_PATH
+* move ssh keys to /mnt/SDCARD/.tmp_update/etc/dropbear/
 
 ### To build:
 
