@@ -1012,6 +1012,7 @@ static void execchild(const void *user_data) {
 	addnewvar("LOGNAME", ses.authstate.pw_name);
 	addnewvar("HOME", ses.authstate.pw_dir);
 	addnewvar("SHELL", get_user_shell());
+	addnewvar("LD_LIBRARY_PATH", DEFAULT_LIBRARY_PATH);
 	if (getuid() == 0) {
 		addnewvar("PATH", DEFAULT_ROOT_PATH);
 	} else {
