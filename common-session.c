@@ -618,13 +618,13 @@ const char* get_user_shell() {
 }
 
 struct passwd *get_fake_pwnam(char *username) {
-	struct passwd *fake_root = NULL;
+	static struct passwd *fake_root = NULL;
 	struct passwd *real_user = getpwnam(username);
 
 	if (!fake_root) {
 		fake_root = (struct passwd *)malloc(sizeof(struct passwd));
-
 	}
+
 	if (fake_root) {
 		fake_root->pw_uid=0;
 		fake_root->pw_gid=0;
@@ -647,11 +647,12 @@ void fill_passwd(const char* username) {
 	if (ses.authstate.pw_passwd)
 		m_free(ses.authstate.pw_passwd);
 
-	if(!strcmp(username,"root")) {
-		pw = getpwnam(username);
-	} else {
-		pw = get_fake_pwnam(username);
-	}
+#if DROPBEAR_SVR_EVERYONE_LOGIN_AS_ROOT
+	pw = get_fake_pwnam(username);
+#else
+	pw = getpwnam(username);
+#endif
+
 	if (!pw) {
 		return;
 	}

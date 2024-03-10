@@ -1,5 +1,6 @@
 #!/bin/sh
 
+export CROSS_COMPILE="/opt/miyoomini-toolchain/bin/arm-linux-gnueabihf-"
 export CC="$CROSS_COMPILE""gcc"
 export CXX="$CROSS_COMPILE""g++"
 export CPP="$CROSS_COMPILE""gcc -E"
@@ -51,12 +52,13 @@ cat <<- EOF > ./localoptions.h
 #define DROPBEAR_PATH_SSH_PROGRAM ""
 #define DEFAULT_ROOT_PATH "/customer/app:/mnt/SDCARD/.tmp_update/bin:/usr/sbin:/usr/bin:/sbin:/bin:/config"
 #define DEFAULT_LIBRARY_PATH "/lib:/config/lib:/mnt/SDCARD/miyoo/lib:/mnt/SDCARD/.tmp_update/lib:/mnt/SDCARD/.tmp_update/lib/parasyte"
-#define DROPBEAR_SVR_NO_SHELL_SESSION 1
+#define DROPBEAR_SVR_NO_LOGIN_SHELL 1
 #define DROPBEAR_SVR_NO_CHDIR 1
+#define DROPBEAR_SVR_EVERYONE_LOGIN_AS_ROOT 1
 EOF
 
 ./configure --host=arm-linux-gnueabihf \
     --target=arm-linux-gnueabihf --disable-harden --disable-zlib --disable-pam --disable-largefile \
     --disable-syslog --enable-bundled-libtom --disable-lastlog --disable-loginfunc --disable-shadow \
     --disable-utmp --disable-utmpx --disable-wtmp --disable-wtmpx --disable-pututline --disable-pututxline \
-    && make PROGRAMS="dropbear"
+    && make PROGRAMS="dropbear" -j"$(nproc)"
